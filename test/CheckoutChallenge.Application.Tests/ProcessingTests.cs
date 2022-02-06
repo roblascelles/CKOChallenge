@@ -30,7 +30,7 @@ namespace CheckoutChallenge.Application.Tests
 
             var result = await handler.Handle(command);
 
-            result.MerchantRef.ShouldBe(command.MerhantRef);
+            result.MerchantRef.ShouldBe(command.MerchantRef);
 
             result.Approved.ShouldBe(expectedApproval);
 

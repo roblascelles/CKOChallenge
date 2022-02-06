@@ -20,7 +20,7 @@ namespace CheckoutChallenge.Application.PaymentProcessing
             var status = MapPaymentStatus(response.Status);
             var approved = status == PaymentStatus.Authorized;
 
-            return new PaymentResponse(approved, command.MerhantRef, status, response.Amount, response.Currency, response.AuthCode);
+            return new PaymentResponse(approved, command.MerchantRef, status, response.Amount, response.Currency, response.AuthCode);
         }
 
         private static AuthorisationRequest CreateAuthorisationRequest(ProcessPaymentCommand command)

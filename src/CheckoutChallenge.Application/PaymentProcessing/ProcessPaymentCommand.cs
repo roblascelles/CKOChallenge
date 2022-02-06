@@ -5,7 +5,7 @@
         public ProcessPaymentCommand(string merchantId, string merchantRef, int amount, string currency, string expiry, string cvv, string pan, string cardHolderName)
         {
             MerchantId = merchantId;
-            MerhantRef = merchantRef;
+            MerchantRef = merchantRef;
             Amount = amount;
             Currency = currency;
             Expiry = expiry;
@@ -15,7 +15,7 @@
         }
 
         public string MerchantId { get; }
-        public string MerhantRef { get; }
+        public string MerchantRef { get; }
         public int Amount { get; }
         public string Currency { get; }
         public string Expiry { get; }
