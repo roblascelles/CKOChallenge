@@ -6,10 +6,10 @@ namespace CheckoutChallenge.Application.PaymentProcessing
 {
     public class ProcessPaymentCommand
     {
-        public ProcessPaymentCommand(string merchantId, string merhantRef, int amount, string currency, string expiry, string cvv, string pan, string cardHolderName)
+        public ProcessPaymentCommand(string merchantId, string merchantRef, int amount, string currency, string expiry, string cvv, string pan, string cardHolderName)
         {
             MerchantId = merchantId;
-            MerhantRef = merhantRef;
+            MerhantRef = merchantRef;
             Amount = amount;
             Currency = currency;
             Expiry = expiry;

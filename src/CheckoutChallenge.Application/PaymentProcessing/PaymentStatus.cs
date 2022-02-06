@@ -4,6 +4,7 @@
     {
         Unknown,
         Authorized,
-        Declined
+        Declined,
+        Error
     }
 }
