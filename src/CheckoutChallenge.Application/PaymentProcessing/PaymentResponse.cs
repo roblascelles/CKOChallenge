@@ -2,8 +2,9 @@
 {
     public class PaymentResponse
     {
-        public PaymentResponse(bool approved, string merchantRef, PaymentStatus status, int amount, string currency, string authCode)
+        public PaymentResponse(string id, bool approved, string merchantRef, PaymentStatus status, int amount, string currency, string authCode)
         {
+            Id = id;
             Approved = approved;
             MerchantRef = merchantRef;
             Status = status;
@@ -12,6 +13,7 @@
             AuthCode = authCode;
         }
 
+        public string Id { get; }
         public bool Approved { get; }
         public string MerchantRef { get; }
         public PaymentStatus Status { get; }

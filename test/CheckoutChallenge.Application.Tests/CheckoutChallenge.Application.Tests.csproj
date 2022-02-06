@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\CheckoutChallenge.Application\CheckoutChallenge.Application.csproj" />
+    <ProjectReference Include="..\..\src\CheckoutChallenge.DataStores.InMemory\CheckoutChallenge.DataStores.InMemory.csproj" />
   </ItemGroup>
 
 </Project>

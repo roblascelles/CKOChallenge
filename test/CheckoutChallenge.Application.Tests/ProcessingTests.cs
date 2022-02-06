@@ -1,8 +1,10 @@
+using System;
 using CheckoutChallenge.Application.Acquirers;
 using CheckoutChallenge.Application.PaymentProcessing;
 using FakeItEasy;
 using Shouldly;
 using System.Threading.Tasks;
+using CheckoutChallenge.Application.DataStore;
 using Xunit;
 
 namespace CheckoutChallenge.Application.Tests
@@ -21,14 +23,15 @@ namespace CheckoutChallenge.Application.Tests
             A.CallTo(() => acquirer.AuthoriseAsync(A<AuthorisationRequest>._)).ReturnsLazily((p) =>
             {
                 var request = p.Arguments[0] as AuthorisationRequest;
+                request.ShouldNotBeNull();
 
                 return Task.FromResult(new AuthorisationResponse(request.Amount, request.Currency, acquirerStatus, "acquirer-auth-code"));
             });
 
-            var handler = new ProcessPaymentHandler(acquirer);
+            var handler = new ProcessPaymentHandler(acquirer, A.Fake<IPaymentRepository>());
             var command = new ProcessPaymentCommand("MERCHANTA", "Order#1", 1299, "GBP", "2030/6", "737", "4111111111111111", "Mr Test");
 
-            var result = await handler.Handle(command);
+            var result = await handler.HandleAsync(command);
 
             result.MerchantRef.ShouldBe(command.MerchantRef);
 

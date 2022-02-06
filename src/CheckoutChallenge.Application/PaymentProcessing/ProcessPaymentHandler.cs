@@ -1,26 +1,33 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CheckoutChallenge.Application.Acquirers;
+using CheckoutChallenge.Application.DataStore;
 
 namespace CheckoutChallenge.Application.PaymentProcessing
 {
     public class ProcessPaymentHandler
     {
         private readonly IAcquirer _acquirer;
+        private readonly IPaymentRepository _repository;
 
-        public ProcessPaymentHandler(IAcquirer acquirer)
+        public ProcessPaymentHandler(IAcquirer acquirer, IPaymentRepository repository)
         {
             _acquirer = acquirer;
+            _repository = repository;
         }
 
-        public async Task<PaymentResponse> Handle(ProcessPaymentCommand command)
+        public async Task<PaymentResponse> HandleAsync(ProcessPaymentCommand command)
         {
+            var id = Guid.NewGuid().ToString("N");
 
             var response = await _acquirer.AuthoriseAsync(CreateAuthorisationRequest(command));
 
             var status = MapPaymentStatus(response.Status);
             var approved = status == PaymentStatus.Authorized;
 
-            return new PaymentResponse(approved, command.MerchantRef, status, response.Amount, response.Currency, response.AuthCode);
+            await _repository.SaveAsync(command.MerchantId, new PaymentRecord(id, status, response.AuthCode));
+
+            return new PaymentResponse(id, approved, command.MerchantRef, status, response.Amount, response.Currency, response.AuthCode);
         }
 
         private static AuthorisationRequest CreateAuthorisationRequest(ProcessPaymentCommand command)
