@@ -16,4 +16,8 @@
     <ProjectReference Include="..\CheckoutChallenge.DataStores.InMemory\CheckoutChallenge.DataStores.InMemory.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+  </ItemGroup>
+
 </Project>
