@@ -12,6 +12,8 @@ namespace CheckoutChallenge.Application.Tests
         [Theory]
         [InlineData(AuthorisationStatus.Authorised, true, PaymentStatus.Authorized)]
         [InlineData(AuthorisationStatus.Declined, false, PaymentStatus.Declined)]
+        [InlineData(AuthorisationStatus.Error, false, PaymentStatus.Error)]
+        [InlineData(AuthorisationStatus.Unknown, false, PaymentStatus.Unknown)]
         public async Task CanProcessPayment(AuthorisationStatus acquirerStatus, bool expectedApproval, PaymentStatus expectedStatus)
         {
             var acquirer = A.Fake<IAcquirer>();

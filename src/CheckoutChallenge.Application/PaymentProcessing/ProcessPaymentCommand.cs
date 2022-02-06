@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CheckoutChallenge.Application.PaymentProcessing
+﻿namespace CheckoutChallenge.Application.PaymentProcessing
 {
     public class ProcessPaymentCommand
     {
