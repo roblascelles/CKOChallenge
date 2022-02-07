@@ -9,7 +9,7 @@ internal static class MappingExtensions
     {
         return new PaymentStatusResponse
         {
-            PaymentId = queryResponse.Id,
+            PaymentId = queryResponse.PaymentId,
             Status = queryResponse.Status.ToString(),
             AuthCode = queryResponse.AuthCode
         };

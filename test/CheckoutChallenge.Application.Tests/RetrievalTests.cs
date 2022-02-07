@@ -39,7 +39,7 @@ public class RetrievalTests
         var queryResponse = await queryHandler.HandleAsync(new PaymentQuery(MerchantId, paymentResponse.Id));
 
         queryResponse.ShouldNotBeNull();
-        queryResponse.Id.ShouldBe(paymentResponse.Id);
+        queryResponse.PaymentId.ShouldBe(paymentResponse.Id);
         queryResponse.Status.ShouldBe(paymentResponse.Status);
 
         queryResponse.AuthCode.ShouldBe(paymentResponse.AuthCode);
@@ -56,7 +56,7 @@ public class RetrievalTests
         var queryResponse = await queryHandler.HandleAsync(new PaymentQuery(MerchantId, paymentResponse.Id));
 
         queryResponse.ShouldNotBeNull();
-        queryResponse.Id.ShouldBe(paymentResponse.Id);
+        queryResponse.PaymentId.ShouldBe(paymentResponse.Id);
         queryResponse.Status.ShouldBe(paymentResponse.Status);
 
         queryResponse.AuthCode.ShouldBeNull();

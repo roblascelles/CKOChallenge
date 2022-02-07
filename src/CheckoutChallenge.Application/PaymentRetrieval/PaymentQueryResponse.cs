@@ -4,13 +4,13 @@ namespace CheckoutChallenge.Application.PaymentRetrieval
 {
     public class PaymentQueryResponse
     {
-        public PaymentQueryResponse(string id, PaymentStatus status, string? authCode)
+        public PaymentQueryResponse(string paymentId, PaymentStatus status, string? authCode)
         {
-            Id = id;
+            PaymentId = paymentId;
             Status = status;
             AuthCode = authCode;
         }
-        public string Id { get; }
+        public string PaymentId { get; }
         public PaymentStatus Status { get; }
         public string? AuthCode { get; }
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CheckoutChallenge.Application.Bus;
-using CheckoutChallenge.Application.Domain;
 using CheckoutChallenge.Application.Domain.Events;
 using CheckoutChallenge.Application.PaymentProcessing;
 
