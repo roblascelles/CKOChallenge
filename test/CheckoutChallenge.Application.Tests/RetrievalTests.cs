@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using CheckoutChallenge.Application.Acquirers;
+using CheckoutChallenge.Application.Bus;
 using CheckoutChallenge.Application.DataStore;
 using CheckoutChallenge.Application.PaymentProcessing;
 using CheckoutChallenge.Application.PaymentRetrieval;
@@ -47,7 +48,7 @@ public class RetrievalTests
             return Task.FromResult(new AuthorisationResponse(request.Amount, request.Currency, acquirerStatus, "acquirer-auth-code"));
         });
 
-        var paymentHandler = new ProcessPaymentHandler(acquirer, repository);
+        var paymentHandler = new ProcessPaymentHandler(acquirer, repository, A.Fake<IPaymentEventPublisher>());
         var command = new ProcessPaymentCommand(MerchantId, "Order#1", 1299, "GBP", "2030/6", "737", "4111111111111111", "Mr Test");
 
         return await paymentHandler.HandleAsync(command);

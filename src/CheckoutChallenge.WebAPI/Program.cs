@@ -1,10 +1,5 @@
 using System.Text.Json.Serialization;
-using CheckoutChallenge.Acquirers.Faked;
-using CheckoutChallenge.Application.Acquirers;
-using CheckoutChallenge.Application.DataStore;
-using CheckoutChallenge.Application.PaymentProcessing;
-using CheckoutChallenge.Application.PaymentRetrieval;
-using CheckoutChallenge.DataStores.InMemory;
+using CheckoutChallenge.WebAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,11 +15,7 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IPaymentRepository>(new InMemoryPaymentRepository());
-builder.Services.AddSingleton<IAcquirer>(new FakeAcquirer());
-
-builder.Services.AddScoped<PaymentQueryHandler>();
-builder.Services.AddScoped<ProcessPaymentHandler>();
+builder.Services.AddCheckoutChallengeServices();
 
 var app = builder.Build();
 
