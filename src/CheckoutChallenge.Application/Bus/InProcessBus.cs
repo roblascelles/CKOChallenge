@@ -5,11 +5,11 @@ using CheckoutChallenge.Application.Domain;
 
 namespace CheckoutChallenge.Application.Bus
 {
-    public class InProcessEventPublisher : IPaymentEventPublisher
+    public class InProcessBus : IPaymentEventPublisher, IPaymentEventSubscriber
     {
         private readonly Dictionary<Type, List<Func<MerchantPaymentEvent, Task>>> _routes = new Dictionary<Type, List<Func<MerchantPaymentEvent, Task>>>();
 
-        public void RegisterHandler<T>(Func<T, Task> handler) where T : MerchantPaymentEvent
+        public void Subscribe<T>(Func<T, Task> handler) where T : MerchantPaymentEvent
         {
             if (!_routes.TryGetValue(typeof(T), out var handlers))
             {

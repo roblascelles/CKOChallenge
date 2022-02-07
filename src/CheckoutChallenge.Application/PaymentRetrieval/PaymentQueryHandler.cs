@@ -1,20 +1,20 @@
 ﻿using System.Threading.Tasks;
-using CheckoutChallenge.Application.DataStore;
+using CheckoutChallenge.Application.Domain;
 
 namespace CheckoutChallenge.Application.PaymentRetrieval
 {
     public class PaymentQueryHandler
     {
-        private readonly IPaymentRepository _repository;
+        private readonly IPaymentStatusRecordRepository _repository;
 
-        public PaymentQueryHandler(IPaymentRepository repository)
+        public PaymentQueryHandler(IPaymentStatusRecordRepository repository)
         {
             _repository = repository;
         }
         public async Task<PaymentQueryResponse?> HandleAsync(PaymentQuery query)
         {
-            var record = await _repository.GetByIdAsync(query.MerchantId, query.Id);
-            return record == null? null : new PaymentQueryResponse(record.Id, record.Status, record.AuthCode);
+            var record = await _repository.GetByIdAsync(new MerchantPaymentId(query.MerchantId, query.Id));
+            return record == null? null : new PaymentQueryResponse(record.Id.PaymentId, record.PaymentStatus, record.AuthCode);
         }
     }
 }

@@ -15,13 +15,6 @@ namespace CheckoutChallenge.DataStores.InMemory
             return Task.CompletedTask;
         }
 
-        public Task<PaymentRecord?> GetByIdAsync(string merchantId, string paymentId)
-        {
-            var key = Key(merchantId, paymentId);
-            var record = _records.ContainsKey(key) ? _records[key] : null;
-            return Task.FromResult(record);
-        }
-
         private static string Key(string merchantId, string paymentId)
         {
             return $"{merchantId};{paymentId}";

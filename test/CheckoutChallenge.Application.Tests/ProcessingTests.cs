@@ -14,18 +14,18 @@ namespace CheckoutChallenge.Application.Tests
     public class ProcessingTests
     {
         private readonly IAcquirer _acquirer = A.Fake<IAcquirer>();
-        private readonly InProcessEventPublisher _eventPublisher = new InProcessEventPublisher();
+        private readonly InProcessBus _eventPublisher = new();
         private readonly ProcessPaymentHandler _commandHandler;
 
-        private PaymentCreated _paymentCreated;
-        private PaymentAuthorised _paymentAuthorised;
-        private PaymentDeclined _paymentDeclined;
+        private PaymentCreated? _paymentCreated;
+        private PaymentAuthorised? _paymentAuthorised;
+        private PaymentDeclined? _paymentDeclined;
 
         public ProcessingTests()
         {
-            _eventPublisher.RegisterHandler<PaymentCreated>(OnPaymentCreated);
-            _eventPublisher.RegisterHandler<PaymentAuthorised>(OnPaymentAuthorised);
-            _eventPublisher.RegisterHandler<PaymentDeclined>(OnPaymentDeclined);
+            _eventPublisher.Subscribe<PaymentCreated>(OnPaymentCreated);
+            _eventPublisher.Subscribe<PaymentAuthorised>(OnPaymentAuthorised);
+            _eventPublisher.Subscribe<PaymentDeclined>(OnPaymentDeclined);
 
             _commandHandler = new ProcessPaymentHandler(_acquirer, A.Fake<IPaymentRepository>(), _eventPublisher);
         }
@@ -99,12 +99,18 @@ namespace CheckoutChallenge.Application.Tests
 
             _paymentAuthorised.Currency.ShouldBe(command.Currency);
             _paymentAuthorised.Amount.ShouldBe(command.Amount);
+            _paymentAuthorised.AuthCode.ShouldBe("acquirer-auth-code");
         }
 
-        [Fact]
-        public async Task PaymentDeclinedEventGetsPublished()
+        [Theory]
+        [InlineData(AuthorisationStatus.Declined, PaymentStatus.Declined)]
+        [InlineData(AuthorisationStatus.CardStolen, PaymentStatus.Declined)]
+        [InlineData(AuthorisationStatus.InsufficientFunds, PaymentStatus.Declined)]
+        [InlineData(AuthorisationStatus.Error, PaymentStatus.Error)]
+        [InlineData(AuthorisationStatus.Unknown, PaymentStatus.Unknown)]
+        public async Task PaymentDeclinedEventGetsPublished(AuthorisationStatus authorisationStatus, PaymentStatus paymentStatus)
         {
-            SetUpFakeAcquirer(AuthorisationStatus.Declined);
+            SetUpFakeAcquirer(authorisationStatus);
 
             var command = new ProcessPaymentCommand("MERCHANTA", "Order#1", 1299, "GBP", "2030/6", "737", "4111111111111111", "Mr Test");
 
@@ -119,7 +125,8 @@ namespace CheckoutChallenge.Application.Tests
             _paymentDeclined.Id.PaymentId.ShouldNotBeNullOrWhiteSpace();
             _paymentDeclined.Id.PaymentId.ShouldBe(result.Id);
 
-            _paymentDeclined.Status.ShouldBe(AuthorisationStatus.Declined);
+            _paymentDeclined.AuthorisationStatus.ShouldBe(authorisationStatus);
+            _paymentDeclined.PaymentStatus.ShouldBe(paymentStatus);
         }
 
         private void SetUpFakeAcquirer(AuthorisationStatus acquirerStatus)

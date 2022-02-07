@@ -1,14 +1,18 @@
 ﻿using CheckoutChallenge.Application.Acquirers;
+using CheckoutChallenge.Application.PaymentProcessing;
 
 namespace CheckoutChallenge.Application.Domain
 {
     public class PaymentDeclined : MerchantPaymentEvent
     {
-        public PaymentDeclined(MerchantPaymentId id, AuthorisationStatus status) : base(id)
+        public PaymentDeclined(MerchantPaymentId id, PaymentStatus paymentStatus, AuthorisationStatus authorisationStatus) : base(id)
         {
-            Status = status;
+            PaymentStatus = paymentStatus;
+            AuthorisationStatus = authorisationStatus;
         }
-        public AuthorisationStatus Status { get; }
+
+        public PaymentStatus PaymentStatus { get; }
+        public AuthorisationStatus AuthorisationStatus { get; }
 
     }
 }

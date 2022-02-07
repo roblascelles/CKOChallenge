@@ -34,11 +34,11 @@ namespace CheckoutChallenge.Application.PaymentProcessing
 
             if (approved)
             {
-                await _eventPublisher.PublishAsync(new PaymentAuthorised(id, response.Amount, response.Currency));
+                await _eventPublisher.PublishAsync(new PaymentAuthorised(id, response.Amount, response.Currency, response.AuthCode));
             }
             else
             {
-                await _eventPublisher.PublishAsync(new PaymentDeclined(id, response.Status));
+                await _eventPublisher.PublishAsync(new PaymentDeclined(id, status, response.Status));
             }
 
             await _repository.SaveAsync(command.MerchantId, new PaymentRecord(id.PaymentId, status, response.AuthCode));

@@ -3,6 +3,7 @@
     public enum PaymentStatus
     {
         Unknown,
+        Processing,
         Authorized,
         Declined,
         Error
