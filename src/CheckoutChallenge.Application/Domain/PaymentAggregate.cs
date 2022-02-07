@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CheckoutChallenge.Application.Acquirers;
+using CheckoutChallenge.Application.Domain.Events;
 using CheckoutChallenge.Application.PaymentProcessing;
 
 namespace CheckoutChallenge.Application.Domain
 {
-    public class PaymentAggregate
+    public class PaymentAggregate : AggregateRoot<MerchantPaymentId>
     {
         private readonly string _merchantRef;
         private readonly int _amount;
@@ -15,11 +14,8 @@ namespace CheckoutChallenge.Application.Domain
         private readonly string _cvv;
         private readonly string _pan;
         private readonly string _cardHolderName;
-        public MerchantPaymentId Id { get; }
 
-        private readonly List<MerchantPaymentEvent> _changes = new List<MerchantPaymentEvent>();
-
-        public PaymentAggregate(MerchantPaymentId id, string merchantRef, int amount, string currency, string expiry, string cvv, string pan, string cardHolderName)
+        public PaymentAggregate(MerchantPaymentId id, string merchantRef, int amount, string currency, string expiry, string cvv, string pan, string cardHolderName) : base(id)
         {
             _merchantRef = merchantRef;
             _amount = amount;
@@ -29,7 +25,6 @@ namespace CheckoutChallenge.Application.Domain
             _pan = pan;
             _cardHolderName = cardHolderName;
 
-            Id = id;
             ApplyChange(new PaymentCreated(id, merchantRef, amount, currency, expiry, cvv, pan, cardHolderName));
         }
 
@@ -55,14 +50,7 @@ namespace CheckoutChallenge.Application.Domain
             return new PaymentResponse(Id.PaymentId, approved, _merchantRef, status, response.Amount, response.Currency, response.AuthCode);
         }
 
-        public IEnumerable<MerchantPaymentEvent> GetUncommittedChanges()
-        {
-            return _changes;
-        }
-        protected void ApplyChange(MerchantPaymentEvent @event)
-        {
-            _changes.Add(@event);
-        }
+ 
 
         private static PaymentStatus MapPaymentStatus(AuthorisationStatus responseStatus)
         {
@@ -78,5 +66,4 @@ namespace CheckoutChallenge.Application.Domain
         }
 
     }
-
 }

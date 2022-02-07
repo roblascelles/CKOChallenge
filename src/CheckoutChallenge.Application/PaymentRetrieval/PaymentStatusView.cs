@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CheckoutChallenge.Application.Bus;
 using CheckoutChallenge.Application.Domain;
+using CheckoutChallenge.Application.Domain.Events;
 using CheckoutChallenge.Application.PaymentProcessing;
 
 namespace CheckoutChallenge.Application.PaymentRetrieval
@@ -17,20 +18,20 @@ namespace CheckoutChallenge.Application.PaymentRetrieval
 
         public async Task Handle(PaymentCreated @event)
         {
-            await _repository.SaveAsync(@event.Id, new PaymentStatusRecord(@event.Id, PaymentStatus.Processing));
+            await _repository.SaveAsync(@event.AggregateId, new PaymentStatusRecord(@event.AggregateId, PaymentStatus.Processing));
         }
 
         public async Task Handle(PaymentAuthorised @event)
         {
-            await _repository.SaveAsync(@event.Id, new PaymentStatusRecord(@event.Id, PaymentStatus.Authorized, @event.AuthCode));
+            await _repository.SaveAsync(@event.AggregateId, new PaymentStatusRecord(@event.AggregateId, PaymentStatus.Authorized, @event.AuthCode));
         }
 
         public async Task Handle(PaymentDeclined @event)
         {
-            await _repository.SaveAsync(@event.Id, new PaymentStatusRecord(@event.Id, @event.PaymentStatus));
+            await _repository.SaveAsync(@event.AggregateId, new PaymentStatusRecord(@event.AggregateId, @event.PaymentStatus));
         }
 
-        public void Subscribe(IPaymentEventSubscriber bus)
+        public void Subscribe(IEventSubscriber bus)
         {
             bus.Subscribe<PaymentCreated>(Handle);
             bus.Subscribe<PaymentAuthorised>(Handle);

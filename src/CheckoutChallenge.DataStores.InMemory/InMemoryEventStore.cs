@@ -2,20 +2,20 @@
 using System.Threading.Tasks;
 using CheckoutChallenge.Application.Bus;
 using CheckoutChallenge.Application.DataStore;
-using CheckoutChallenge.Application.Domain;
+using CheckoutChallenge.Application.Domain.Events;
 
 namespace CheckoutChallenge.DataStores.InMemory
 {
-    public class InMemoryPaymentEventStore : IPaymentEventStore
+    public class InMemoryEventStore<TId> : IEventStore<TId>
     {
-        private readonly IPaymentEventPublisher _eventPublisher;
+        private readonly IEventPublisher _eventPublisher;
 
-        public InMemoryPaymentEventStore(IPaymentEventPublisher eventPublisher)
+        public InMemoryEventStore(IEventPublisher eventPublisher)
         {
             _eventPublisher = eventPublisher;
         }
 
-        public async Task SaveEventsAsync(MerchantPaymentId id, IEnumerable<MerchantPaymentEvent> events)
+        public async Task SaveEventsAsync(TId id, IEnumerable<Event<TId>> events)
         {
             foreach (var @event in events)
             {

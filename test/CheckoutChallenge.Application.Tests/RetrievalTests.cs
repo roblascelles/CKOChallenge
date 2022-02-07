@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CheckoutChallenge.Application.Acquirers;
 using CheckoutChallenge.Application.Bus;
 using CheckoutChallenge.Application.DataStore;
+using CheckoutChallenge.Application.Domain;
 using CheckoutChallenge.Application.PaymentProcessing;
 using CheckoutChallenge.Application.PaymentRetrieval;
 using CheckoutChallenge.DataStores.InMemory;
@@ -20,12 +21,12 @@ public class RetrievalTests
     private readonly InProcessBus _bus = new();
     private readonly IPaymentStatusRecordRepository _queryStore = new InMemoryPaymentStatusRecordRepository();
 
-    private readonly IPaymentRepository _paymentRepository;
+    private readonly IRepository<PaymentAggregate, MerchantPaymentId> _paymentRepository;
 
     public RetrievalTests()
     {
-        var eventStore = new InMemoryPaymentEventStore(_bus);
-        _paymentRepository = new PaymentRepository(eventStore);
+        var eventStore = new InMemoryEventStore<MerchantPaymentId>(_bus);
+        _paymentRepository = new Repository<PaymentAggregate, MerchantPaymentId>(eventStore);
     }
 
     [Theory]

@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CheckoutChallenge.Application.Domain;
+using CheckoutChallenge.Application.Domain.Events;
 
 namespace CheckoutChallenge.Application.Bus
 {
-    public class InProcessBus : IPaymentEventPublisher, IPaymentEventSubscriber
+    public class InProcessBus : IEventPublisher, IEventSubscriber
     {
-        private readonly Dictionary<Type, List<Func<MerchantPaymentEvent, Task>>> _routes = new Dictionary<Type, List<Func<MerchantPaymentEvent, Task>>>();
+        private readonly Dictionary<Type, List<Func<object, Task>>> _routes = new Dictionary<Type, List<Func<object, Task>>>();
 
-        public void Subscribe<T>(Func<T, Task> handler) where T : MerchantPaymentEvent
+        public void Subscribe<T>(Func<T, Task> handler) where T : Event
         {
             if (!_routes.TryGetValue(typeof(T), out var handlers))
             {
-                handlers = new List<Func<MerchantPaymentEvent, Task>>();
+                handlers = new List<Func<object, Task>>();
                 _routes.Add(typeof(T), handlers);
             }
 
@@ -21,7 +22,7 @@ namespace CheckoutChallenge.Application.Bus
         }
 
 
-        public async Task PublishAsync<T>(T @event) where T : MerchantPaymentEvent
+        public async Task PublishAsync<T>(T @event) where T : Event
         {
             if (!_routes.TryGetValue(@event.GetType(), out var handlers)) return;
 

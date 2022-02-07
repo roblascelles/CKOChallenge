@@ -9,9 +9,9 @@ namespace CheckoutChallenge.Application.PaymentProcessing
     public class ProcessPaymentHandler
     {
         private readonly IAcquirer _acquirer;
-        private readonly IPaymentRepository _repository;
+        private readonly IRepository<PaymentAggregate, MerchantPaymentId> _repository;
 
-        public ProcessPaymentHandler(IAcquirer acquirer, IPaymentRepository repository)
+        public ProcessPaymentHandler(IAcquirer acquirer, IRepository<PaymentAggregate, MerchantPaymentId> repository)
         {
             _acquirer = acquirer;
             _repository = repository;

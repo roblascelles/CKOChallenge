@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CheckoutChallenge.Application.Domain;
+using CheckoutChallenge.Application.Domain.Events;
 
 namespace CheckoutChallenge.Application.DataStore
 {
-    public interface IPaymentEventStore
+    public interface IEventStore<TId>
     {
-        Task SaveEventsAsync(MerchantPaymentId id, IEnumerable<MerchantPaymentEvent> events);
+        Task SaveEventsAsync(TId id, IEnumerable<Event<TId>> events);
     }
 }

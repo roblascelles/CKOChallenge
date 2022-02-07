@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CheckoutChallenge.Application.Bus;
 using CheckoutChallenge.Application.DataStore;
 using CheckoutChallenge.Application.Domain;
+using CheckoutChallenge.Application.Domain.Events;
 using CheckoutChallenge.DataStores.InMemory;
 using Xunit;
 
@@ -28,8 +29,8 @@ namespace CheckoutChallenge.Application.Tests
             _eventPublisher.Subscribe<PaymentAuthorised>(OnPaymentAuthorised);
             _eventPublisher.Subscribe<PaymentDeclined>(OnPaymentDeclined);
 
-            var eventStore = new InMemoryPaymentEventStore(_eventPublisher);
-            var repository = new PaymentRepository(eventStore);
+            var eventStore = new InMemoryEventStore<MerchantPaymentId>(_eventPublisher);
+            var repository = new Repository<PaymentAggregate, MerchantPaymentId>(eventStore);
 
             _commandHandler = new ProcessPaymentHandler(_acquirer, repository);
         }
@@ -70,9 +71,9 @@ namespace CheckoutChallenge.Application.Tests
 
             _paymentCreated.ShouldNotBeNull();
 
-            _paymentCreated.Id.MerchantId.ShouldBe(command.MerchantId);
-            _paymentCreated.Id.PaymentId.ShouldNotBeNullOrWhiteSpace();
-            _paymentCreated.Id.PaymentId.ShouldBe(result.Id);
+            _paymentCreated.AggregateId.MerchantId.ShouldBe(command.MerchantId);
+            _paymentCreated.AggregateId.PaymentId.ShouldNotBeNullOrWhiteSpace();
+            _paymentCreated.AggregateId.PaymentId.ShouldBe(result.Id);
             
             _paymentCreated.Amount.ShouldBe(command.Amount);
             _paymentCreated.CardHolderName.ShouldBe(command.CardHolderName);
@@ -97,9 +98,9 @@ namespace CheckoutChallenge.Application.Tests
 
             _paymentAuthorised.ShouldNotBeNull();
 
-            _paymentAuthorised.Id.MerchantId.ShouldBe(command.MerchantId);
-            _paymentAuthorised.Id.PaymentId.ShouldNotBeNullOrWhiteSpace();
-            _paymentAuthorised.Id.PaymentId.ShouldBe(result.Id);
+            _paymentAuthorised.AggregateId.MerchantId.ShouldBe(command.MerchantId);
+            _paymentAuthorised.AggregateId.PaymentId.ShouldNotBeNullOrWhiteSpace();
+            _paymentAuthorised.AggregateId.PaymentId.ShouldBe(result.Id);
 
             _paymentAuthorised.Currency.ShouldBe(command.Currency);
             _paymentAuthorised.Amount.ShouldBe(command.Amount);
@@ -125,9 +126,9 @@ namespace CheckoutChallenge.Application.Tests
 
             _paymentDeclined.ShouldNotBeNull();
 
-            _paymentDeclined.Id.MerchantId.ShouldBe(command.MerchantId);
-            _paymentDeclined.Id.PaymentId.ShouldNotBeNullOrWhiteSpace();
-            _paymentDeclined.Id.PaymentId.ShouldBe(result.Id);
+            _paymentDeclined.AggregateId.MerchantId.ShouldBe(command.MerchantId);
+            _paymentDeclined.AggregateId.PaymentId.ShouldNotBeNullOrWhiteSpace();
+            _paymentDeclined.AggregateId.PaymentId.ShouldBe(result.Id);
 
             _paymentDeclined.AuthorisationStatus.ShouldBe(authorisationStatus);
             _paymentDeclined.PaymentStatus.ShouldBe(paymentStatus);

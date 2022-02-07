@@ -1,6 +1,6 @@
-﻿namespace CheckoutChallenge.Application.Domain
+﻿namespace CheckoutChallenge.Application.Domain.Events
 {
-    public class PaymentAuthorised : MerchantPaymentEvent
+    public class PaymentAuthorised : Event<MerchantPaymentId>
     {
         public PaymentAuthorised(MerchantPaymentId id, int amount, string currency, string authCode) : base(id)
         {

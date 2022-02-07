@@ -2,6 +2,7 @@ using CheckoutChallenge.Acquirers.Faked;
 using CheckoutChallenge.Application.Acquirers;
 using CheckoutChallenge.Application.Bus;
 using CheckoutChallenge.Application.DataStore;
+using CheckoutChallenge.Application.Domain;
 using CheckoutChallenge.Application.PaymentProcessing;
 using CheckoutChallenge.Application.PaymentRetrieval;
 using CheckoutChallenge.DataStores.InMemory;
@@ -14,8 +15,8 @@ public static class ServiceExtensions
     {
         services.AddSingleton<IPaymentStatusRecordRepository, InMemoryPaymentStatusRecordRepository>();
         
-        services.AddSingleton<IPaymentRepository, PaymentRepository>();
-        services.AddSingleton<IPaymentEventStore, InMemoryPaymentEventStore>();
+        services.AddSingleton<IRepository<PaymentAggregate, MerchantPaymentId>, Repository<PaymentAggregate, MerchantPaymentId>>();
+        services.AddSingleton<IEventStore<MerchantPaymentId>, InMemoryEventStore<MerchantPaymentId>>();
 
         services.AddSingleton<IAcquirer, FakeAcquirer>();
 
@@ -31,8 +32,8 @@ public static class ServiceExtensions
     {
         var bus = new InProcessBus();
 
-        services.AddSingleton<IPaymentEventPublisher>(bus);
-        services.AddSingleton<IPaymentEventSubscriber>(bus);
+        services.AddSingleton<IEventPublisher>(bus);
+        services.AddSingleton<IEventSubscriber>(bus);
 
         var statusRecordRepository = new InMemoryPaymentStatusRecordRepository();
         services.AddSingleton<IPaymentStatusRecordRepository>(statusRecordRepository);

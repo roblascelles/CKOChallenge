@@ -1,6 +1,6 @@
-﻿namespace CheckoutChallenge.Application.Domain
+﻿namespace CheckoutChallenge.Application.Domain.Events
 {
-    public class PaymentCreated : MerchantPaymentEvent
+    public class PaymentCreated : Event<MerchantPaymentId>
     {
         public PaymentCreated(MerchantPaymentId id, string merchantRef, int amount, string currency, string expiry, string cvv, string pan, string cardHolderName) : base(id)
         {

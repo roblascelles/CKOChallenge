@@ -4,8 +4,8 @@ using CheckoutChallenge.Application.Domain;
 
 namespace CheckoutChallenge.Application.DataStore
 {
-    public interface IPaymentRepository
+    public interface IRepository<T, TId> where T : AggregateRoot<TId>
     {
-        Task SaveAsync(PaymentAggregate payment);
+        Task SaveAsync(T aggregate);
     }
 }
