@@ -13,7 +13,9 @@ public static class ServiceExtensions
     public static IServiceCollection AddCheckoutChallengeServices(this IServiceCollection services)
     {
         services.AddSingleton<IPaymentStatusRecordRepository, InMemoryPaymentStatusRecordRepository>();
-        services.AddSingleton<IPaymentRepository, InMemoryPaymentRepository>();
+        
+        services.AddSingleton<IPaymentRepository, PaymentRepository>();
+        services.AddSingleton<IPaymentEventStore, InMemoryPaymentEventStore>();
 
         services.AddSingleton<IAcquirer, FakeAcquirer>();
 

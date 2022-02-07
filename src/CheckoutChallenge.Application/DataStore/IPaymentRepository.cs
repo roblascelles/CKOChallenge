@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using CheckoutChallenge.Application.Domain;
 
 namespace CheckoutChallenge.Application.DataStore
 {
     public interface IPaymentRepository
     {
-        Task SaveAsync(string merchantId, PaymentRecord record);
+        Task SaveAsync(PaymentAggregate payment);
     }
 }

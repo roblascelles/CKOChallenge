@@ -20,6 +20,14 @@ public class RetrievalTests
     private readonly InProcessBus _bus = new();
     private readonly IPaymentStatusRecordRepository _queryStore = new InMemoryPaymentStatusRecordRepository();
 
+    private readonly IPaymentRepository _paymentRepository;
+
+    public RetrievalTests()
+    {
+        var eventStore = new InMemoryPaymentEventStore(_bus);
+        _paymentRepository = new PaymentRepository(eventStore);
+    }
+
     [Theory]
     [InlineData(AuthorisationStatus.Authorised)]
     public async Task CanAuthoriseAndRetrievePayment(AuthorisationStatus acquirerStatus)
@@ -67,7 +75,7 @@ public class RetrievalTests
         var view = new PaymentStatusView(_queryStore);
         view.Subscribe(_bus);
 
-        var paymentHandler = new ProcessPaymentHandler(_acquirer, A.Fake<IPaymentRepository>(), _bus);
+        var paymentHandler = new ProcessPaymentHandler(_acquirer, _paymentRepository);
         var command = new ProcessPaymentCommand(MerchantId, "Order#1", 1299, "GBP", "2030/6", "737", "4111111111111111", "Mr Test");
 
         return await paymentHandler.HandleAsync(command);

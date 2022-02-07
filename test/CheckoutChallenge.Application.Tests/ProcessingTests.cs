@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CheckoutChallenge.Application.Bus;
 using CheckoutChallenge.Application.DataStore;
 using CheckoutChallenge.Application.Domain;
+using CheckoutChallenge.DataStores.InMemory;
 using Xunit;
 
 namespace CheckoutChallenge.Application.Tests
@@ -27,7 +28,10 @@ namespace CheckoutChallenge.Application.Tests
             _eventPublisher.Subscribe<PaymentAuthorised>(OnPaymentAuthorised);
             _eventPublisher.Subscribe<PaymentDeclined>(OnPaymentDeclined);
 
-            _commandHandler = new ProcessPaymentHandler(_acquirer, A.Fake<IPaymentRepository>(), _eventPublisher);
+            var eventStore = new InMemoryPaymentEventStore(_eventPublisher);
+            var repository = new PaymentRepository(eventStore);
+
+            _commandHandler = new ProcessPaymentHandler(_acquirer, repository);
         }
 
         [Theory]
