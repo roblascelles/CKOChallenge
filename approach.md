@@ -28,6 +28,7 @@ Clean architecture: -- add this --
 
 TDD:  -- add this -- 
 
+Coops vid?
 
 ### CQRS/event-sourcing flow 
 
@@ -54,19 +55,30 @@ From [Miro board](https://miro.com/app/board/uXjVOP8QxT8=/?invite_link_id=604144
 * add metrics - e.g: stats for
   * request times & counts
   * response codes
-  * errors
+  * errors/exceptions
+  * acquirer response codes
+  * acquirer response times
 * tracing (look into x-ray, if hosting on AWS)
 
 Also, merchants will require API documentation - which will need to be much more detailed, and hand-holding, than OpenAPI/Swagger - maybe see if there's a [Hugo](https://gohugo.io/) template suitable.
 
 ### Hosting/Infrastructure options
 
-The API could be hosted in a container - AWS has options for that (ECS/EKS).  The way the code is structured, it would also be easy to move the command + query handlers into AWS Lambda & use API gateway.
+The API could be hosted in a container - AWS has options for that ([ECS](https://aws.amazon.com/ecs/)/[EKS](https://aws.amazon.com/eks/)).  The way the code is structured, it would also be easy to move the command + query handlers into AWS Lambda & use API gateway.
 
-DynamoDB, or any other no-SQL seems a good fit for the projection datastore. 
+DynamoDB, or any other no-SQL seems a good fit for the projection datastore. The beauty of CQRS though, is that it enables us to have many & varied datastores on the read-side.
 
 For the event-store, we could look into Greg Young's [EventStore](https://www.eventstore.com/eventstoredb); possibly dynamoDB could be an option too.
 
 Message bus could be implemented with AWS SNS+SQS.
 
 I'm sure that other cloud providers have equally suitable offerings - just I'm more familiar with the AWS options.
+
+
+### Observations
+
+Event-sourcing was probably a step too far, given the initial requirements;  it does however lend itself to extending the functionality - e.g. adding refund/capture endpoints would be pretty simple.
+
+The CQRS pattern is very powerful: adding functionality for merchants to analyse their authorisation rates, or for a way to monitor rejections globally per BIN would be pretty trivial (just be a question of subscribing to the events & writing to new projections).
+
+.NET 6 seems blindingly quick! It also has support for [nullable reference types](https://docs.microsoft.com/en-us/dotnet/csharp/nullable-references) enabled by default for new projects, which seems sensible. 
