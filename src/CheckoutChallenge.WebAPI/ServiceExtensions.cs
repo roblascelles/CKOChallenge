@@ -6,6 +6,7 @@ using CheckoutChallenge.Application.Domain;
 using CheckoutChallenge.Application.PaymentProcessing;
 using CheckoutChallenge.Application.PaymentRetrieval;
 using CheckoutChallenge.DataStores.InMemory;
+using CheckoutChallenge.WebAPI.Auth;
 
 namespace CheckoutChallenge.WebAPI;
 
@@ -19,6 +20,8 @@ public static class ServiceExtensions
         services.AddSingleton<IEventStore<MerchantPaymentId>, InMemoryEventStore<MerchantPaymentId>>();
 
         services.AddSingleton<IAcquirer, FakeAcquirer>();
+
+        services.AddSingleton<IApiKeyStore, TestAPIKeyStore>();
 
         services.AddBus();
 

@@ -1,10 +1,13 @@
 ﻿using CheckoutChallenge.Application.PaymentProcessing;
 using CheckoutChallenge.Application.PaymentRetrieval;
+using CheckoutChallenge.WebAPI.Auth;
 using CheckoutChallenge.WebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CheckoutChallenge.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/payments")]
     [ApiController]
     public class PaymentController : ControllerBase
@@ -18,9 +21,13 @@ namespace CheckoutChallenge.WebAPI.Controllers
             _processPaymentHandler = processPaymentHandler;
         }
 
-        [HttpGet("{merchantId}/{paymentId}")]
-        public async Task<ActionResult<PaymentStatusResponse>> Get(string merchantId, string paymentId)
+        [HttpGet("{paymentId}")]
+        public async Task<ActionResult<PaymentStatusResponse>> Get(string paymentId)
         {
+            if (!HttpContext.User.TryGetMerchantId(out var merchantId))
+            {
+                return Unauthorized();
+            }
 
             var response = await _queryHandler.HandleAsync(new PaymentQuery(merchantId, paymentId));
             if (response == null)
@@ -34,7 +41,12 @@ namespace CheckoutChallenge.WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<ProcessPaymentResponse>> Post([FromBody] ProcessPaymentRequest request)
         {
-            var response = await _processPaymentHandler.HandleAsync(request.ToCommand());
+            if (!HttpContext.User.TryGetMerchantId(out var merchantId))
+            {
+                return Unauthorized();
+            }
+
+            var response = await _processPaymentHandler.HandleAsync(request.ToCommand(merchantId));
             return response.ToApiResponse();
 
         }

@@ -8,10 +8,6 @@ public class ProcessPaymentRequest
 {
     [Required]
     [StringLength(maximumLength: 255, MinimumLength = 1)]
-    public string MerchantId { get; set; }
-
-    [Required]
-    [StringLength(maximumLength: 255, MinimumLength = 1)]
     public string MerchantRef { get; set; }
 
     [Required]

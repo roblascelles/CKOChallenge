@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using CheckoutChallenge.WebAPI.Models;
@@ -17,9 +18,10 @@ public class ProcessingTests
 
         var client = application.CreateClient();
 
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("secret_key_test_a");
+
         var request = new ProcessPaymentRequest()
         {
-            MerchantId = merchantId,
             MerchantRef = merchantRef,
             Amount = amount,
             CardHolderName = cardholderName,

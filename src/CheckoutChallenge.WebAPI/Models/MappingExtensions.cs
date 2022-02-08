@@ -29,9 +29,9 @@ internal static class MappingExtensions
         };
     }
 
-    public static ProcessPaymentCommand ToCommand(this ProcessPaymentRequest request)
+    public static ProcessPaymentCommand ToCommand(this ProcessPaymentRequest request, string merchantId)
     {
-        return new ProcessPaymentCommand(request.MerchantId, request.MerchantRef, request.Amount, request.Currency,
+        return new ProcessPaymentCommand(merchantId, request.MerchantRef, request.Amount, request.Currency,
             request.Expiry, request.Cvv, request.Pan, request.CardHolderName);
     }
 }
