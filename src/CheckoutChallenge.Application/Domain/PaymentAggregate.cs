@@ -7,19 +7,22 @@ namespace CheckoutChallenge.Application.Domain
 {
     public class PaymentAggregate : AggregateRoot<MerchantPaymentId>
     {
-        private string _merchantRef;
-        private int _amount;
-        private string _currency;
-        private Card _card;
+        public string MerchantRef { get; private set; }
+        public int Amount { get; private set; }
+        public string Currency { get; private set; }
+        public Card Card { get; private set; }
 
-        public PaymentAggregate(MerchantPaymentId id, string merchantRef, int amount, string currency, Card card) : base(id)
+        //need for restoring:
+        public PaymentAggregate() {}
+
+        public PaymentAggregate(MerchantPaymentId id, string merchantRef, int amount, string currency, Card card) 
         {
             ApplyChange(new PaymentCreated(id, merchantRef, amount, currency, card));
         }
 
         public async Task<PaymentResponse> Authorise(IAcquirer acquirer)
         {
-            var request = new AuthorisationRequest(_amount, _currency, _card);
+            var request = new AuthorisationRequest(Amount, Currency, Card);
 
             var response = await acquirer.AuthoriseAsync(request);
 
@@ -36,15 +39,16 @@ namespace CheckoutChallenge.Application.Domain
                 ApplyChange(new PaymentDeclined(Id, status, response.Status));
             }
 
-            return new PaymentResponse(Id.PaymentId, approved, _merchantRef, status, response.Amount, response.Currency, response.AuthCode);
+            return new PaymentResponse(Id.PaymentId, approved, MerchantRef, status, response.Amount, response.Currency, response.AuthCode);
         }
 
         internal void Apply(PaymentCreated @event)
         {
-            _merchantRef = @event.MerchantRef;
-            _amount = @event.Amount;
-            _currency = @event.Currency;
-            _card = @event.Card;
+            Id = @event.AggregateId;
+            MerchantRef = @event.MerchantRef;
+            Amount = @event.Amount;
+            Currency = @event.Currency;
+            Card = @event.Card;
         }
 
         internal void Apply(PaymentAuthorised @event)

@@ -26,7 +26,7 @@ namespace CheckoutChallenge.Application.PaymentProcessing
 
             var response = await payment.Authorise(_acquirer);
 
-            await _repository.SaveAsync(payment);
+            await _repository.SaveAsync(payment, AggregateRoot.NewVersion);
 
             return response;
         }

@@ -3,19 +3,29 @@ using CheckoutChallenge.Application.Domain.Events;
 
 namespace CheckoutChallenge.Application.Domain
 {
-    public abstract class AggregateRoot<TId>
+    public abstract class AggregateRoot<TId> : AggregateRoot
     {
-        public TId Id { get; }
-        private readonly List<Event<TId>> _changes = new List<Event<TId>>();
+        public TId Id { get; protected set; }
 
-        public AggregateRoot(TId id)
-        {
-            Id = id;
-        }
+        private readonly List<Event<TId>> _changes = new List<Event<TId>>();
 
         public IEnumerable<Event<TId>> GetUncommittedChanges()
         {
             return _changes;
+        }
+
+        public void ClearUncommittedEvents()
+        {
+            _changes.Clear();
+        }
+
+        public void LoadsFromHistory(IEnumerable<Event<TId>> history)
+        {
+            foreach (var e in history)
+            {
+                ApplyChange(e, false);
+                Version = e.Version;
+            }
         }
 
         protected void ApplyChange(Event<TId> @event)
@@ -28,5 +38,12 @@ namespace CheckoutChallenge.Application.Domain
             ((dynamic) this).Apply((dynamic) @event);
             if (isNew) _changes.Add(@event);
         }
+    }
+
+    public abstract class AggregateRoot
+    {
+        public const long NewVersion = -1;
+        public long Version { get; internal set; }
+
     }
 }

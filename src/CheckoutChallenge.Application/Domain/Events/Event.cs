@@ -15,6 +15,7 @@ namespace CheckoutChallenge.Application.Domain.Events
     public abstract class Event
     {
         public Guid EventId { get; }
+        public long Version { get; set; }
 
         protected Event()
         {
