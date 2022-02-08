@@ -69,7 +69,7 @@ Sample successful response:
 }
 ```
 
-To make the fake acquirer return a response that isn't authorised, there are [magic CVV values defined[(//github.com/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.Acquirers.Faked/FakeAcquirer.cs#L25-L28) e.g. using 400 as the CVV will return a declined authorisation from the acquirer.
+To make the fake acquirer return a response that isn't authorised, there are [magic CVV values defined](//github.com/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.Acquirers.Faked/FakeAcquirer.cs#L25-L28) e.g. using 400 as the CVV will return a declined authorisation from the acquirer.
 
 
 
