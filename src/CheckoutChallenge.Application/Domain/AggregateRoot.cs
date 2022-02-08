@@ -17,9 +17,16 @@ namespace CheckoutChallenge.Application.Domain
         {
             return _changes;
         }
+
         protected void ApplyChange(Event<TId> @event)
         {
-            _changes.Add(@event);
+            ApplyChange(@event, true);
+        }
+
+        protected void ApplyChange(Event<TId> @event, bool isNew)
+        {
+            ((dynamic) this).Apply((dynamic) @event);
+            if (isNew) _changes.Add(@event);
         }
     }
 }

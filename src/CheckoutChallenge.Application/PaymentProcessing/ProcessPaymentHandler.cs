@@ -20,8 +20,9 @@ namespace CheckoutChallenge.Application.PaymentProcessing
         public async Task<PaymentResponse> HandleAsync(ProcessPaymentCommand command)
         {
             var id = MerchantPaymentId.CreateNew(command.MerchantId);
+            var card = new Card(command.Expiry, command.Cvv, command.Pan, command.CardHolderName);
 
-            var payment = new PaymentAggregate(id, command.MerchantRef, command.Amount, command.Currency, command.Expiry, command.Cvv, command.Pan, command.CardHolderName);
+            var payment = new PaymentAggregate(id, command.MerchantRef, command.Amount, command.Currency, card);
 
             var response = await payment.Authorise(_acquirer);
 

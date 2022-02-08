@@ -7,30 +7,19 @@ namespace CheckoutChallenge.Application.Domain
 {
     public class PaymentAggregate : AggregateRoot<MerchantPaymentId>
     {
-        private readonly string _merchantRef;
-        private readonly int _amount;
-        private readonly string _currency;
-        private readonly string _expiry;
-        private readonly string _cvv;
-        private readonly string _pan;
-        private readonly string _cardHolderName;
+        private string _merchantRef;
+        private int _amount;
+        private string _currency;
+        private Card _card;
 
-        public PaymentAggregate(MerchantPaymentId id, string merchantRef, int amount, string currency, string expiry, string cvv, string pan, string cardHolderName) : base(id)
+        public PaymentAggregate(MerchantPaymentId id, string merchantRef, int amount, string currency, Card card) : base(id)
         {
-            _merchantRef = merchantRef;
-            _amount = amount;
-            _currency = currency;
-            _expiry = expiry;
-            _cvv = cvv;
-            _pan = pan;
-            _cardHolderName = cardHolderName;
-
-            ApplyChange(new PaymentCreated(id, merchantRef, amount, currency, expiry, cvv, pan, cardHolderName));
+            ApplyChange(new PaymentCreated(id, merchantRef, amount, currency, card));
         }
 
         public async Task<PaymentResponse> Authorise(IAcquirer acquirer)
         {
-            var request = new AuthorisationRequest(_amount, _currency, _expiry, _cvv, _pan, _cardHolderName);
+            var request = new AuthorisationRequest(_amount, _currency, _card);
 
             var response = await acquirer.AuthoriseAsync(request);
 
@@ -50,6 +39,21 @@ namespace CheckoutChallenge.Application.Domain
             return new PaymentResponse(Id.PaymentId, approved, _merchantRef, status, response.Amount, response.Currency, response.AuthCode);
         }
 
+        internal void Apply(PaymentCreated @event)
+        {
+            _merchantRef = @event.MerchantRef;
+            _amount = @event.Amount;
+            _currency = @event.Currency;
+            _card = @event.Card;
+        }
+
+        internal void Apply(PaymentAuthorised @event)
+        {
+        }
+
+        internal void Apply(PaymentDeclined @event)
+        {
+        }
  
 
         private static PaymentStatus MapPaymentStatus(AuthorisationStatus responseStatus)

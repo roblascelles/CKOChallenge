@@ -76,12 +76,14 @@ namespace CheckoutChallenge.Application.Tests
             _paymentCreated.AggregateId.PaymentId.ShouldBe(result.Id);
             
             _paymentCreated.Amount.ShouldBe(command.Amount);
-            _paymentCreated.CardHolderName.ShouldBe(command.CardHolderName);
             _paymentCreated.Currency.ShouldBe(command.Currency);
-            _paymentCreated.Cvv.ShouldBe(command.Cvv);
-            _paymentCreated.Expiry.ShouldBe(command.Expiry);
+
             _paymentCreated.MerchantRef.ShouldBe(command.MerchantRef);
-            _paymentCreated.Pan.ShouldBe(command.Pan);
+
+            _paymentCreated.Card.CardHolderName.ShouldBe(command.CardHolderName);
+            _paymentCreated.Card.Cvv.ShouldBe(command.Cvv);
+            _paymentCreated.Card.Expiry.ShouldBe(command.Expiry);
+            _paymentCreated.Card.Pan.ShouldBe(command.Pan);
         }
 
         [Fact]
