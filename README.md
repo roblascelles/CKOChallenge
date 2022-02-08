@@ -36,7 +36,7 @@ Allowed values are:
 * `secret_key_test_a`
 * `secret_key_test_b`
 
-Test API Keys [hardcoded here](/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.WebAPI/Auth/TestAPIKeyStore.cs#L9)
+Test API Keys [hardcoded here](//github.com/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.WebAPI/Auth/TestAPIKeyStore.cs#L9)
 
 ### Process a payment:
 
@@ -54,7 +54,7 @@ Using Swagger UI, POST a payment request to `/api/payments/` - sample request:
 }
 ```
 
-Validation rules [defined here](https/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.WebAPI/Models/ProcessPaymentRequest.cs#L10) - e.g. posting with an empty CVV value, will return 400.
+Validation rules [defined here](//github.com/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.WebAPI/Models/ProcessPaymentRequest.cs#L10) - e.g. posting with an empty CVV value, will return 400.
 
 Sample successful response:
 ```
@@ -69,7 +69,7 @@ Sample successful response:
 }
 ```
 
-To make the fake acquirer return a response that isn't authorised, there are [magic CVV values defined[(https://github.com/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.Acquirers.Faked/FakeAcquirer.cs#L25-L28) e.g. using 400 as the CVV will return a declined authorisation from the acquirer.
+To make the fake acquirer return a response that isn't authorised, there are [magic CVV values defined[(//github.com/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.Acquirers.Faked/FakeAcquirer.cs#L25-L28) e.g. using 400 as the CVV will return a declined authorisation from the acquirer.
 
 
 
