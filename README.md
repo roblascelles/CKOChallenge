@@ -6,17 +6,19 @@ See [API design & architectural approach](approach.md) for details & discussions
 
 ## Prerequisites
 * .NET 6 SDK
-  
+* Docker (if running with docker)
+    
 ## Build, test, run locally
 
 
 ### Option 1 - use Docker image
 
+e.g. to map port 8081 to the container:
 ```
- docker run -P roblascelles/checkoutchallengewebapi
- ```
+docker run -d -p 127.0.0.1:8081:80 roblascelles/checkoutchallengewebapi
+```
 
- Open browser to swagger UI: e.g https://localhost:55003/swagger/index.html
+Open browser to swagger UI: e.g http://localhost:8081/swagger
 
 ### Option 2 - use Visual Studio
 
@@ -36,7 +38,7 @@ Run Web API:
 dotnet run --project .\src\CheckoutChallenge.WebAPI\CheckoutChallenge.WebAPI.csproj
 ```
 
-Open browser to swagger UI: e.g https://localhost:7019/swagger/index.html
+Open browser to swagger UI: e.g http://localhost:7019/swagger/index.html
 
 ## Explore the API
 
