@@ -2,7 +2,8 @@
 
 ## Assumptions
 
-* The acquiring bank doesn't have to be out-of-process. So we can just have a simple class for now, rather than another API accessible over HTTP.
+* The Payment Gateway will be high volume, combined with high latency (due the time taken for acquiring banks to process authorisations).
+* For the exercise, the acquiring bank doesn't have to be out-of-process. So we can just have a simple class for now, rather than another API accessible over HTTP.
 * We could support multiple acquiring banks, but it seems prudent to just have a single bank initially.
 * We’ll ignore any payment authentication concerns (i.e 3DS) - so the response from the acquiring bank will either be authorised, or declined (and maybe processing errors).
 * the API can be exposed on HTTP for now, ignoring any security concerns.
@@ -19,7 +20,7 @@
 * Follow clean architecture principles (equivalent to hexagonal/onion).
 * Use TDD - this combined with clean architecture, will mean the tests target the application (mocking out dependencies); increasing development speed overall.
 * .NET 6 is the latest .NET tech & has LTS - build the API in that & our application libraries in .NET Standard 2.1 to maximise potential re-use.
-
+* Make any calls to dependencies (DBs/acquirer etc.) async/await.
 
 ## Implementation
 
