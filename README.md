@@ -9,12 +9,20 @@ See [API design & architectural approach](approach.md) for details & discussions
   
 ## Build, test, run locally
 
-### Option 1 - use Visual Studio
+
+### Option 1 - use Docker image
+
+```
+ docker run -P roblascelles/checkoutchallengewebapi
+ ```
+
+ Open browser to swagger UI: e.g https://localhost:55003/swagger/index.html
+
+### Option 2 - use Visual Studio
 
 Using Visual Studio 2019/2022, set [CheckoutChallenge.WebAPI](https://github.com/roblascelles/CKOChallenge/tree/master/src/CheckoutChallenge.WebAPI) as startup project & run.
 
-
-### Option 2 - use command line
+### Option 3 - use command line
 
 Using command line (from root of repository):
 
