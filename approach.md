@@ -71,6 +71,7 @@ From [Miro board](https://miro.com/app/board/uXjVOP8QxT8=/?invite_link_id=604144
 ### Productionise
 Ignoring the gulf of missing functionality that a real Payment Gateway would require; from a non-functional perspective you'd need to look into:
 
+* move to HTTPS
 * CI/CD - e.g:
  * build automation
  * integration testing
