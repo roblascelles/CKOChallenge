@@ -11,7 +11,13 @@ internal static class MappingExtensions
         {
             PaymentId = queryResponse.PaymentId,
             Status = queryResponse.Status.ToString(),
-            AuthCode = queryResponse.AuthCode
+            AuthCode = queryResponse.AuthCode,
+            Amount = queryResponse.Amount,
+            Currency = queryResponse.Currency,
+            MerchantRef = queryResponse.MerchantRef,
+            CardNumber = queryResponse.CardNumber,
+            CardExpiry = queryResponse.CardExpiry,
+            CardHolder = queryResponse.CardHolder,
         };
     }
     public static ProcessPaymentResponse ToApiResponse(this PaymentResponse paymentResponse)

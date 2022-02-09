@@ -17,17 +17,17 @@ namespace CheckoutChallenge.Application.PaymentRetrieval
 
         public async Task Handle(PaymentCreated @event)
         {
-            await _repository.SaveAsync(@event.AggregateId, new PaymentStatusRecord(@event.AggregateId, PaymentStatus.Processing));
+            await _repository.SaveAsync(@event.AggregateId, new PaymentStatusRecord(@event.AggregateId, PaymentStatus.Processing, @event.MerchantRef, @event.Amount, @event.Currency, @event.Card.Pan, @event.Card.Expiry, @event.Card.CardHolderName));
         }
 
         public async Task Handle(PaymentAuthorised @event)
         {
-            await _repository.SaveAsync(@event.AggregateId, new PaymentStatusRecord(@event.AggregateId, PaymentStatus.Authorized, @event.AuthCode));
+            await _repository.UpdateAuthStatusAsync(@event.AggregateId, PaymentStatus.Authorized, @event.AuthCode);
         }
 
         public async Task Handle(PaymentDeclined @event)
         {
-            await _repository.SaveAsync(@event.AggregateId, new PaymentStatusRecord(@event.AggregateId, @event.PaymentStatus));
+            await _repository.UpdateAuthStatusAsync(@event.AggregateId, @event.PaymentStatus);
         }
 
         public void Subscribe(IEventSubscriber bus)

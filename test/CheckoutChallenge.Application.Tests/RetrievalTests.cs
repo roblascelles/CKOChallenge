@@ -43,6 +43,15 @@ public class RetrievalTests
         queryResponse.Status.ShouldBe(paymentResponse.Status);
 
         queryResponse.AuthCode.ShouldBe(paymentResponse.AuthCode);
+
+        queryResponse.Amount.ShouldBe(1299);
+        queryResponse.Currency.ShouldBe("GBP");
+        
+        queryResponse.MerchantRef.ShouldBe("Order#1");
+        
+        queryResponse.CardExpiry.ShouldBe("2030/6");
+        queryResponse.CardNumber.ShouldBe("4111111111111111");
+        queryResponse.CardHolder.ShouldBe("Mr Test");
     }   
     
     [Theory]
@@ -60,6 +69,15 @@ public class RetrievalTests
         queryResponse.Status.ShouldBe(paymentResponse.Status);
 
         queryResponse.AuthCode.ShouldBeNull();
+
+        queryResponse.Amount.ShouldBe(1299);
+        queryResponse.Currency.ShouldBe("GBP");
+
+        queryResponse.MerchantRef.ShouldBe("Order#1");
+
+        queryResponse.CardExpiry.ShouldBe("2030/6");
+        queryResponse.CardNumber.ShouldBe("4111111111111111");
+        queryResponse.CardHolder.ShouldBe("Mr Test");
     }
 
 
