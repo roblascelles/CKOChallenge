@@ -1,9 +1,8 @@
 # Checkout.com Challenge
 
-Recruitment challenge to create an API for a Payment Gateway.
+### Recruitment challenge to create an API for a Payment Gateway.
 
 See [API design & architectural approach](approach.md) for details & discussions.
-
 
 ## Prerequisites
 * .NET 6 SDK
