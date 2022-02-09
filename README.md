@@ -1,10 +1,13 @@
 # Checkout.com Challenge
 
+### Recruitment challenge to create an API for a Payment Gateway.
+
+See [API design & architectural approach](approach.md) for details & discussions.
 
 ## Prerequisites
 * .NET 6 SDK
   
-## Build, test, run
+## Build, test, run locally
 
 Using Visual Studio 2019/2022, or using command line (from root of repository):
 
@@ -18,10 +21,9 @@ Run Web API:
 dotnet run --project .\src\CheckoutChallenge.WebAPI\CheckoutChallenge.WebAPI.csproj
 ```
 
-## Explore(!) the API
+## Explore the API
 
 Open browser to swagger UI: e.g https://localhost:7019/swagger/index.html
-
 
 ### Set authorize API Key
 
@@ -33,7 +35,7 @@ Allowed values are:
 * `secret_key_test_a`
 * `secret_key_test_b`
 
-Test API Keys defined here: https://github.com/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.WebAPI/Auth/TestAPIKeyStore.cs#L9
+Test API Keys [hardcoded here](//github.com/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.WebAPI/Auth/TestAPIKeyStore.cs#L9)
 
 ### Process a payment:
 
@@ -51,7 +53,7 @@ Using Swagger UI, POST a payment request to `/api/payments/` - sample request:
 }
 ```
 
-Validation rules defined here: https://github.com/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.WebAPI/Models/ProcessPaymentRequest.cs#L10 - e.g. posting with an empty CVV value, will return 400.
+Validation rules [defined here](//github.com/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.WebAPI/Models/ProcessPaymentRequest.cs#L10) - e.g. posting with an empty CVV value, will return 400.
 
 Sample successful response:
 ```
@@ -66,7 +68,7 @@ Sample successful response:
 }
 ```
 
-To make the fake acquirer return a response that isn't authorised, there are magic CVV values defined: https://github.com/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.Acquirers.Faked/FakeAcquirer.cs#L25-L28 e.g. using 400 as the CVV will return a declined authorisation from the acquirer.
+To make the fake acquirer return a response that isn't authorised, there are [magic CVV values defined](//github.com/roblascelles/CKOChallenge/blob/master/src/CheckoutChallenge.Acquirers.Faked/FakeAcquirer.cs#L25-L28) e.g. using 400 as the CVV will return a declined authorisation from the acquirer.
 
 
 
@@ -83,22 +85,3 @@ Sample response:
 }
 ```
 
-
-### Assumptions
-
-* Events are OK to be stored with full PCI data (PAN/CVV etc.) unencrypted!! 
-
-### Productionise
-* use actual database (for projection)
-* use an real event-store
-* use actual message bus
-* merchants & API Keys retrieved from somewhere external
-* structured logging
-* metrics - e.g: stats for
-  * request times & counts
-  * response codes
-  * errors
-* tracing
-* tokenisation
-
-### What cloud technologies you’d use and why. 
