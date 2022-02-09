@@ -1,15 +1,22 @@
 # Checkout.com Challenge
-
-### Recruitment challenge to create an API for a Payment Gateway.
+## Recruitment challenge to create an API for a Payment Gateway.
 
 See [API design & architectural approach](approach.md) for details & discussions.
+
 
 ## Prerequisites
 * .NET 6 SDK
   
 ## Build, test, run locally
 
-Using Visual Studio 2019/2022, or using command line (from root of repository):
+### Option 1 - use Visual Studio
+
+Using Visual Studio 2019/2022, set [CheckoutChallenge.WebAPI](https://github.com/roblascelles/CKOChallenge/tree/master/src/CheckoutChallenge.WebAPI) as startup project & run.
+
+
+### Option 2 - use command line
+
+Using command line (from root of repository):
 
 Run tests:
 ```
@@ -21,9 +28,9 @@ Run Web API:
 dotnet run --project .\src\CheckoutChallenge.WebAPI\CheckoutChallenge.WebAPI.csproj
 ```
 
-## Explore the API
-
 Open browser to swagger UI: e.g https://localhost:7019/swagger/index.html
+
+## Explore the API
 
 ### Set authorize API Key
 
@@ -79,9 +86,15 @@ Using Swagger UI, GET the payment status at `/api/payments/{paymentId}` - where 
 Sample response:
 ```
 {
-  "paymentId": "daa44dc4344a48c39ffe7ad00e75744b",
+  "paymentId": "e10e3dcd06024a0c8ffb5234dce8ca8b",
   "status": "Authorized",
-  "authCode": "6b12647595b5403bb11902c1103aa95d"
+  "authCode": "3615bf9dfb0b41fba58584802a02da05",
+  "amount": 2199,
+  "currency": "GBP",
+  "merchantRef": "ref#1",
+  "cardNumber": "411111******1111",
+  "cardExpiry": "2030/12",
+  "cardHolder": "Mr Test"
 }
 ```
 
