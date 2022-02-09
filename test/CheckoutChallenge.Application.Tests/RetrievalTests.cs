@@ -50,7 +50,8 @@ public class RetrievalTests
         queryResponse.MerchantRef.ShouldBe("Order#1");
         
         queryResponse.CardExpiry.ShouldBe("2030/6");
-        queryResponse.CardNumber.ShouldBe("4111111111111111");
+        queryResponse.CardBin.ShouldBe("411111");
+        queryResponse.CardLast4Digits.ShouldBe("1234");
         queryResponse.CardHolder.ShouldBe("Mr Test");
     }   
     
@@ -76,7 +77,8 @@ public class RetrievalTests
         queryResponse.MerchantRef.ShouldBe("Order#1");
 
         queryResponse.CardExpiry.ShouldBe("2030/6");
-        queryResponse.CardNumber.ShouldBe("4111111111111111");
+        queryResponse.CardBin.ShouldBe("411111");
+        queryResponse.CardLast4Digits.ShouldBe("1234");
         queryResponse.CardHolder.ShouldBe("Mr Test");
     }
 
@@ -95,7 +97,7 @@ public class RetrievalTests
         view.Subscribe(_bus);
 
         var paymentHandler = new ProcessPaymentHandler(_acquirer, _paymentRepository);
-        var command = new ProcessPaymentCommand(MerchantId, "Order#1", 1299, "GBP", "2030/6", "737", "4111111111111111", "Mr Test");
+        var command = new ProcessPaymentCommand(MerchantId, "Order#1", 1299, "GBP", "2030/6", "737", "4111111111111234", "Mr Test");
 
         return await paymentHandler.HandleAsync(command);
 

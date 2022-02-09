@@ -10,19 +10,19 @@ namespace CheckoutChallenge.Application.Domain
         public string MerchantRef { get; private set; }
         public int Amount { get; private set; }
         public string Currency { get; private set; }
-        public Card Card { get; private set; }
+        public CardSummary Card { get; private set; }
 
         //need for restoring:
         public PaymentAggregate() {}
 
-        public PaymentAggregate(MerchantPaymentId id, string merchantRef, int amount, string currency, Card card) 
+        public PaymentAggregate(MerchantPaymentId id, string merchantRef, int amount, string currency, CardSummary card) 
         {
             ApplyChange(new PaymentCreated(id, merchantRef, amount, currency, card));
         }
 
-        public async Task<PaymentResponse> Authorise(IAcquirer acquirer)
+        public async Task<PaymentResponse> Authorise(IAcquirer acquirer, Card card)
         {
-            var request = new AuthorisationRequest(Amount, Currency, Card);
+            var request = new AuthorisationRequest(Amount, Currency, card);
 
             var response = await acquirer.AuthoriseAsync(request);
 

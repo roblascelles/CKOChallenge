@@ -27,7 +27,7 @@ public class PaymentAggregateTests
     public async Task CanSaveAndRestoreNewPayment()
     {
         var id = MerchantPaymentId.CreateNew("MerchantABC");
-        var card = new Card("2030/01", "111", "4111111111111111", "Test Holder");
+        var card = new CardSummary("2030/01", "4111111111111234", "Test Holder");
 
         var aggregate = new PaymentAggregate(id, "shop-ref", 1367, "GBP", card);
 
@@ -45,8 +45,9 @@ public class PaymentAggregateTests
 
         restoredAggregate.Card.CardHolderName.ShouldBe("Test Holder");
         restoredAggregate.Card.Expiry.ShouldBe("2030/01");
-        restoredAggregate.Card.Cvv.ShouldBe("111");
-        restoredAggregate.Card.Pan.ShouldBe("4111111111111111");
+        
+        restoredAggregate.Card.Bin.ShouldBe("411111");
+        restoredAggregate.Card.Last4Digits.ShouldBe("1234");
     }
 
 
@@ -55,7 +56,8 @@ public class PaymentAggregateTests
     {
         var id = MerchantPaymentId.CreateNew("MerchantABC");
         var card = new Card("2030/01", "111", "4111111111111111", "Test Holder");
-        var aggregate = new PaymentAggregate(id, "shop-ref", 1367, "GBP", card);
+        
+        var aggregate = new PaymentAggregate(id, "shop-ref", 1367, "GBP", new CardSummary(card));
 
         await _repository.SaveAsync(aggregate, AggregateRoot.NewVersion);
 
@@ -66,7 +68,7 @@ public class PaymentAggregateTests
 
         SetUpFakeAcquirer(AuthorisationStatus.Authorised);
 
-        var response = await restoredAggregate.Authorise(_acquirer);
+        var response = await restoredAggregate.Authorise(_acquirer, card);
         response.Status.ShouldBe(PaymentStatus.Authorized);
 
         await _repository.SaveAsync(restoredAggregate, 0);

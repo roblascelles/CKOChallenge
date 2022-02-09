@@ -4,7 +4,7 @@ namespace CheckoutChallenge.Application.PaymentRetrieval
 {
     public class PaymentQueryResponse
     {
-        public PaymentQueryResponse(string paymentId, PaymentStatus status, string merchantRef, int amount, string currency, string cardNumber, string cardExpiry, string cardHolder, string? authCode)
+        public PaymentQueryResponse(string paymentId, PaymentStatus status, string merchantRef, int amount, string currency, string cardBin, string cardLast4Digits,  string cardExpiry, string cardHolder, string? authCode)
         {
             PaymentId = paymentId;
             Status = status;
@@ -13,7 +13,9 @@ namespace CheckoutChallenge.Application.PaymentRetrieval
             Amount = amount;
             Currency = currency;
 
-            CardNumber = cardNumber;
+            CardBin = cardBin;
+            CardLast4Digits = cardLast4Digits;
+
             CardExpiry = cardExpiry;
             CardHolder = cardHolder;
 
@@ -25,7 +27,8 @@ namespace CheckoutChallenge.Application.PaymentRetrieval
         public int Amount { get; set; }
         public string Currency { get; set; }
         public string MerchantRef { get; set; }
-        public string CardNumber { get; set; }
+        public string CardBin { get; set; }
+        public string CardLast4Digits { get; set; }
         public string CardExpiry { get; set; }
         public string CardHolder { get; set; }
     }

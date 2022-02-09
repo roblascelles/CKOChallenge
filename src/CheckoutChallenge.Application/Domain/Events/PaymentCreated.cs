@@ -2,7 +2,7 @@
 {
     public class PaymentCreated : Event<MerchantPaymentId>
     {
-        public PaymentCreated(MerchantPaymentId id, string merchantRef, int amount, string currency, Card card) : base(id)
+        public PaymentCreated(MerchantPaymentId id, string merchantRef, int amount, string currency, CardSummary card) : base(id)
         {
             MerchantRef = merchantRef;
             Amount = amount;
@@ -12,6 +12,6 @@
         public string MerchantRef { get; }
         public int Amount { get; }
         public string Currency { get; }
-        public Card Card{ get; }
+        public CardSummary Card { get; }
     }
 }

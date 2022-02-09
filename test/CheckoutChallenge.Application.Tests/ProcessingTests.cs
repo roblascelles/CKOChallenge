@@ -64,7 +64,7 @@ namespace CheckoutChallenge.Application.Tests
         {
             SetUpFakeAcquirer(AuthorisationStatus.Authorised);
 
-            var command = new ProcessPaymentCommand("MERCHANTA", "Order#1", 1299, "GBP", "2030/6", "737", "4111111111111111", "Mr Test");
+            var command = new ProcessPaymentCommand("MERCHANTA", "Order#1", 1299, "GBP", "2030/6", "737", "4111111111111234", "Mr Test");
 
             var result = await _commandHandler.HandleAsync(command);
             result.Approved.ShouldBe(true);
@@ -81,9 +81,9 @@ namespace CheckoutChallenge.Application.Tests
             _paymentCreated.MerchantRef.ShouldBe(command.MerchantRef);
 
             _paymentCreated.Card.CardHolderName.ShouldBe(command.CardHolderName);
-            _paymentCreated.Card.Cvv.ShouldBe(command.Cvv);
             _paymentCreated.Card.Expiry.ShouldBe(command.Expiry);
-            _paymentCreated.Card.Pan.ShouldBe(command.Pan);
+            _paymentCreated.Card.Bin.ShouldBe("411111");
+            _paymentCreated.Card.Last4Digits.ShouldBe("1234");
         }
 
         [Fact]

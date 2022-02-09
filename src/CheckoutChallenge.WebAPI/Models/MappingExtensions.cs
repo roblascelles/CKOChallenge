@@ -15,7 +15,7 @@ internal static class MappingExtensions
             Amount = queryResponse.Amount,
             Currency = queryResponse.Currency,
             MerchantRef = queryResponse.MerchantRef,
-            CardNumber = queryResponse.CardNumber,
+            CardNumber = queryResponse.CardBin + "******" + queryResponse.CardLast4Digits,
             CardExpiry = queryResponse.CardExpiry,
             CardHolder = queryResponse.CardHolder,
         };
