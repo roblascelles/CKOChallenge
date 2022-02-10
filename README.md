@@ -5,8 +5,8 @@ See [API design & architectural approach](approach.md) for details & discussions
 
 
 ## Prerequisites
-* .NET 6 SDK
-* Docker (if running with docker)
+* [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+* [Docker](https://docs.docker.com/get-docker/) (if running with docker)
     
 ## Build, test, run locally
 
