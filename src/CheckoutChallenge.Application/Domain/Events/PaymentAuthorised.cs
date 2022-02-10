@@ -2,7 +2,7 @@
 {
     public class PaymentAuthorised : Event<MerchantPaymentId>
     {
-        public PaymentAuthorised(MerchantPaymentId id, int amount, string currency, string authCode) : base(id)
+        public PaymentAuthorised(MerchantPaymentId id, int amount, string currency, string? authCode) : base(id)
         {
             Amount = amount;
             Currency = currency;
@@ -10,6 +10,6 @@
         }
         public int Amount { get; }
         public string Currency { get; }
-        public string AuthCode { get; }
+        public string? AuthCode { get; }
     }
 }

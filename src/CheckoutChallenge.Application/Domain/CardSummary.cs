@@ -21,11 +21,11 @@ namespace CheckoutChallenge.Application.Domain
             if (!cardHolder.IsValidCardHolder()) throw new ArgumentException($"{cardHolder}", nameof(cardHolder));
 
 
-            Expiry = expiry;
-            CardHolderName = cardHolder;
+            Expiry = expiry!;
+            CardHolderName = cardHolder!;
 
-            Bin = bin;
-            Last4Digits = last4Digits;
+            Bin = bin!;
+            Last4Digits = last4Digits!;
         }
 
         public CardSummary(string expiry, string pan, string cardHolder) : this(expiry, ExtractBin(pan), ExtractLast4Digits(pan), cardHolder)
