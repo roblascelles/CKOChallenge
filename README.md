@@ -38,7 +38,7 @@ Run Web API:
 dotnet run --project .\src\CheckoutChallenge.WebAPI\CheckoutChallenge.WebAPI.csproj
 ```
 
-Open browser to swagger UI: e.g http://localhost:7019/swagger/index.html
+Open browser to swagger UI: e.g http://localhost:7019/swagger
 
 ## Explore the API
 

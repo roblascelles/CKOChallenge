@@ -108,3 +108,4 @@ The CQRS pattern is very powerful: e.g. adding functionality for merchants to an
 
 .NET 6 seems blindingly quick! It also has support for [nullable reference types](https://docs.microsoft.com/en-us/dotnet/csharp/nullable-references) enabled by default for new projects, which seems sensible. 
 
+I liked the challenge - the most interesting part, and possibly one deserving of extra mile bonus points, was applying TDD over clean architecture to progress through CQRS to full event-sourcing.

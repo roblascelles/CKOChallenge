@@ -17,6 +17,8 @@ builder.Services
     });
 
 builder.Services.AddEndpointsApiExplorer();
+
+
 builder.Services.AddSwaggerGen(c => {
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -51,11 +53,17 @@ builder.Services.AddAuthorization(options =>
     defaultAuthorizationPolicyBuilder = defaultAuthorizationPolicyBuilder.RequireAuthenticatedUser();
     options.DefaultPolicy = defaultAuthorizationPolicyBuilder.Build();
 });
+
 builder.Services.AddCheckoutChallengeServices();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.MapGet("/", (ctx) =>
+{
+    ctx.Response.Redirect("/swagger");
+    return Task.CompletedTask;
+});
+
 
 app.UseSwagger();
 app.UseSwaggerUI();
