@@ -12,6 +12,12 @@ namespace CheckoutChallenge.Application.Domain
         public string Currency { get; private set; }
         public CardSummary Card { get; private set; }
 
+        public int? AuthorisedAmount { get; private set; }
+        public string? AuthCode { get; private set; }
+
+        public AuthorisationStatus AuthorisationStatus { get; private set; }
+
+
         //need for restoring:
         public PaymentAggregate() {}
 
@@ -53,10 +59,14 @@ namespace CheckoutChallenge.Application.Domain
 
         internal void Apply(PaymentAuthorised @event)
         {
+            AuthorisedAmount = @event.Amount;
+            AuthorisationStatus = AuthorisationStatus.Authorised;
+            AuthCode = @event.AuthCode;
         }
 
         internal void Apply(PaymentDeclined @event)
         {
+            AuthorisationStatus = @event.AuthorisationStatus;
         }
  
 
