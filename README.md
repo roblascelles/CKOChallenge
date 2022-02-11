@@ -91,7 +91,7 @@ To make the fake acquirer return a response that isn't authorised, there are [ma
 
 ### Retrieve a payment:
 
-Using Swagger UI, GET the payment status at `/api/payments/{paymentId}` - where `paymentId` is the value return from the process payment endpoint.
+Using Swagger UI, GET the payment status at `/api/payments/{paymentId}` - where `paymentId` is the value returned from the process payment endpoint.
 
 Sample response:
 ```
