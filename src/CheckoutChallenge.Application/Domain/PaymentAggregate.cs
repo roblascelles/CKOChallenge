@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CheckoutChallenge.Application.Acquirers;
 using CheckoutChallenge.Application.Domain.Events;
 using CheckoutChallenge.Application.PaymentProcessing;
@@ -7,10 +8,10 @@ namespace CheckoutChallenge.Application.Domain
 {
     public class PaymentAggregate : AggregateRoot<MerchantPaymentId>
     {
-        public string MerchantRef { get; private set; }
+        public string MerchantRef { get; private set; } = default!;
         public int Amount { get; private set; }
-        public string Currency { get; private set; }
-        public CardSummary Card { get; private set; }
+        public string Currency { get; private set; } = default!;
+        public CardSummary Card { get; private set; } = default!;
 
         public int? AuthorisedAmount { get; private set; }
         public string? AuthCode { get; private set; }
@@ -19,10 +20,15 @@ namespace CheckoutChallenge.Application.Domain
 
 
         //need for restoring:
-        public PaymentAggregate() {}
+        private PaymentAggregate() {}
 
-        public PaymentAggregate(MerchantPaymentId id, string merchantRef, int amount, string currency, CardSummary card) 
+        public PaymentAggregate(MerchantPaymentId id, string merchantRef, int amount, string currency, CardSummary card)
         {
+            if (id == null) throw new ArgumentNullException(nameof(id));
+            if (merchantRef == null) throw new ArgumentNullException(nameof(merchantRef));
+            if (currency == null) throw new ArgumentNullException(nameof(currency));
+            if (card == null) throw new ArgumentNullException(nameof(card));
+
             ApplyChange(new PaymentCreated(id, merchantRef, amount, currency, card));
         }
 

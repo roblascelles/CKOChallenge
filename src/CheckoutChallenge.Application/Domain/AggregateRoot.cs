@@ -5,7 +5,7 @@ namespace CheckoutChallenge.Application.Domain
 {
     public abstract class AggregateRoot<TId> : AggregateRoot
     {
-        public TId Id { get; protected set; }
+        public TId Id { get; protected set; } = default!;
 
         private readonly List<Event<TId>> _changes = new List<Event<TId>>();
 
