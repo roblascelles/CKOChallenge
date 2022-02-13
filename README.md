@@ -3,6 +3,12 @@
 
 See [API design & architectural approach](approach.md) for details & discussions.
 
+## Hosted 
+
+Access the API running under Docker on the Raspberry PI under my desk at:
+
+http://alibob.sytes.net/   (assuming I haven't kicked the power cable out)
+
 
 ## Prerequisites
 * [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
